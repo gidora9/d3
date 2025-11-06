@@ -55,3 +55,20 @@ You can also require individual modules and combine them into a `d3` object usin
 ```js
 var d3 = Object.assign({}, require("d3-format"), require("d3-geo"), require("d3-geo-projection"));
 ```
+
+## Mock GSeal Lite server
+
+A lightweight FastAPI application is available for testing webhook flows locally. Install the dependencies and launch the server with uvicorn:
+
+```bash
+pip install fastapi uvicorn httpx
+uvicorn gseal_lite_server:app --reload
+```
+
+The server exposes three endpoints:
+
+* `POST /start-test` — triggers a mock job that calls the mock GSeal API and schedules a webhook.
+* `POST /mock-gseal-api` — simulates the remote API and dispatches a webhook after a short delay.
+* `POST /app-webhook-listener` — receives and logs the webhook payload to stdout.
+
+Use `/start-test` to exercise the full loop. The mock API waits one second before emitting the webhook so you can observe the asynchronous behavior.
