@@ -8,7 +8,10 @@ rollup.rollup({
 }).then(function(bundle) {
   return bundle.generate({format: "cjs"});
 }).then(function(result) {
-  var code = result.code + "Object.defineProperty(exports, \"event\", {get: function() { return d3Selection.event; }});\n";
+  var generated = result && result.code != null ? result.code
+      : result && result.output && result.output[0] && result.output[0].code;
+  var code = (generated || "") +
+      "Object.defineProperty(exports, \"event\", {get: function() { return d3Selection.event; }});\n";
   return new Promise(function(resolve, reject) {
     fs.writeFile("build/d3.node.js", code, "utf8", function(error) {
       if (error) return reject(error);
