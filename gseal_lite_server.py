@@ -14,7 +14,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import sys
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Mapping, Optional
 
 import httpx
 from fastapi import FastAPI
@@ -35,12 +35,27 @@ app = FastAPI(title="GSeal Lite Mock Server", version="1.0.0")
 INTERNAL_BASE_URL = "http://testserver"
 
 
-def _model_to_dict(model: BaseModel) -> Dict[str, Any]:
-    """Return a dictionary representation compatible with both Pydantic v1 & v2."""
+def _model_to_dict(model: Any) -> Dict[str, Any]:
+    """Return a dictionary representation for BaseModel instances or plain mappings.
 
-    if hasattr(model, "model_dump"):
-        return model.model_dump(exclude_none=True)  # type: ignore[attr-defined]
-    return model.dict(exclude_none=True)
+    FastAPI will coerce request bodies into Pydantic models, but the helper
+    functions are also invoked directly in unit tests where plain dictionaries
+    are passed.  Supporting mappings keeps the code flexible while preserving
+    the existing behaviour of omitting ``None`` values from the payload.
+    """
+
+    if isinstance(model, BaseModel):
+        if hasattr(model, "model_dump"):
+            return model.model_dump(exclude_none=True)  # type: ignore[attr-defined]
+        return model.dict(exclude_none=True)
+
+    if isinstance(model, Mapping):
+        return {key: value for key, value in model.items() if value is not None}
+
+    raise TypeError(
+        "Unsupported payload type. Expected a Pydantic BaseModel or mapping, "
+        f"received {type(model)!r}."
+    )
 
 
 class StartTestRequest(BaseModel):
