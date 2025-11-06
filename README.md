@@ -56,6 +56,21 @@ You can also require individual modules and combine them into a `d3` object usin
 var d3 = Object.assign({}, require("d3-format"), require("d3-geo"), require("d3-geo-projection"));
 ```
 
+## Running the FastAPI example
+
+This repository also includes a small FastAPI setup. To install the Python dependencies, run:
+
+```bash
+pip install -r requirements.txt
+```
+
+Then start the development server with Uvicorn:
+
+```bash
+uvicorn your_app_module:app --reload
+```
+
+Replace `your_app_module:app` with the actual module and application object that you want to serve.
 ## Mock GSeal Lite server
 
 A lightweight FastAPI application is available for testing webhook flows locally. Install the dependencies and launch the server with uvicorn:
