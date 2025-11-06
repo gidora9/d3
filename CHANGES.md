@@ -1,8 +1,20 @@
+# Changes in D3 7.0
+
+[Released June 11, 2021.](https://github.com/d3/d3/releases/tag/v7.0.0)
+
+*This document covers only major changes. For minor and patch changes, please see the [release notes](https://github.com/d3/d3/releases).*
+
+D3 now ships as pure ES modules and requires Node.js 12 or higher. For more, please read [Sindre Sorhus’s FAQ](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
+
+[d3.bin](https://github.com/d3/d3-array/blob/main/README.md#bin) now ignores nulls. [d3.ascending](https://github.com/d3/d3-array/blob/main/README.md#ascending) and [d3.descending](https://github.com/d3/d3-array/blob/main/README.md#descending) no longer consider null comparable.
+
+[Ordinal scales](https://github.com/d3/d3-scale/blob/main/README.md#ordinal-scales) now use [InternMap](https://github.com/mbostock/internmap) for domains; domain values are now uniqued by coercing to a primitive value via *object*.valueOf instead of coercing to a string via *object*.toString.
+
+Array-likes (*e.g.*, a live NodeList such as *element*.childNodes) are converted to arrays in [d3.selectAll](https://github.com/d3/d3-selection/blob/main/README.md#selectAll) and [*selection*.selectAll](https://github.com/d3/d3-selection/blob/main/README.md#selection_selectAll).
+
 # Changes in D3 6.0
 
 [Released August 26, 2020.](https://github.com/d3/d3/releases/tag/v6.0.0)
-
-*This document covers only major changes. For minor and patch changes, please see the [release notes](https://github.com/d3/d3/releases).*
 
 D3 now **uses native collections** (Map and Set) and **accepts iterables**. [d3.group and d3.rollup](https://observablehq.com/@d3/d3-group) are powerful new aggregation functions that replace d3.nest and work great [with d3-hierarchy](https://observablehq.com/d/9a453665f405eebf) and d3-selection. There are lots of new helpers in d3-array, too, such as [d3.greatest](https://observablehq.com/@d3/d3-least), [d3.quickselect](https://observablehq.com/@d3/d3-quickselect), and [d3.fsum](https://observablehq.com/@d3/d3-fsum).
 
@@ -190,7 +202,7 @@ For an overview of changes, see https://observablehq.com/@d3/d3-selection-2-0.
 
 * Add [*transition*.easeVarying](https://github.com/d3/d3-transition/blob/master/README.md#transition_easeVarying).
 * Add *transition*[Symbol.iterator]; transitions are now iterable.
-* Fix [*selection*.transition](https://github.com/d3/d3-transition/blob/master/README.md#selection_transition) to error if the named transition to inherit is not found.k
+* Fix [*selection*.transition](https://github.com/d3/d3-transition/blob/master/README.md#selection_transition) to error if the named transition to inherit is not found.
 * Fix [*transition*.end](https://github.com/d3/d3-transition/blob/master/README.md#transition_end) to resolve immediately if the selection is empty.
 
 ### d3-zoom
